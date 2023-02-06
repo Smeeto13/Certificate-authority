@@ -1,0 +1,1 @@
+signtool sign /sha1 {thumbprint} /fd SHA256 /t http://timestamp.comodoca.com/authenticode {toSign}

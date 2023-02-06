@@ -1,0 +1,16 @@
+[req]
+default_bits = 4096
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
+ST = (State Or Province Name)
+C = (City)
+emailAddress = (email)
+CN = (Common name, Generally your name or something descriptive like "Local CA")
+
+[v3_req]
+basicConstraints = critical,CA:TRUE,pathlen:1
+keyUsage = critical,cRLSign, digitalSignature, keyCertSign

@@ -1,0 +1,18 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+x509_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
+ST = (State Or Province Name)
+C = (City)
+emailAddress = (email)
+CN = (Common name, Generally your name or something descriptive like "Digital Signature")
+
+[v3_req]
+nsCertType=objsign, objCA
+basicConstraints = critical, CA:FALSE
+keyUsage = critical, digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
+extendedKeyUsage = critical, codeSigning, emailProtection, timeStamping, msCodeInd, msCodeCom, msCTLSign, OCSPSigning, pkInitKDC, 1.2.840.113583.1.1.5, 1.3.6.1.4.1.311.10.3.12
