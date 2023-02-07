@@ -1,8 +1,12 @@
 [req]
-default_bits = 4096
+default_bits       = 4096
+default_md         = sha256
 distinguished_name = req_distinguished_name
-req_extensions = v3_req
-prompt = no
+req_extensions     = v3_req
+x509_extensions    = v3_req
+string_mask        = MASK:0x2002
+utf8               = yes
+prompt             = no
 
 [req_distinguished_name]
 L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
