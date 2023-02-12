@@ -37,19 +37,19 @@ def main():
     if prompt("Generate 9A?"):
         if passwd == "":
             passwd = input("PEM Password: ")
-        slotGen("9A", "9a") 
+        slotGen("9A", "9a", "ECCP384") 
         slotIssue("9A", "9a", passwd)        
 
     if prompt("Generate 9C"):
         if passwd == "":
             passwd = input("PEM Password: ")
-        slotGen("9C", "9c")
+        slotGen("9C", "9c", "ECCP384")
         slotIssue("9C", "9c", passwd)
     
     if prompt("Generate 9E"):
         if passwd == "":
             passwd = input("PEM Password: ")
-        slotGen("9E", "9e")
+        slotGen("9E", "9e", "RSA2048")
         slotIssue("9E", "9e", passwd)
 
 
