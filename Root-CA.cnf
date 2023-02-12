@@ -67,6 +67,8 @@ L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Can
 ST = (State Or Province Name)
 C = (City)
 emailAddress = (email)
+GN = (Given Name)
+title = (Title)
 CN = (Common name, Generally your name or something descriptive like "Local CA")
 
 [v3_req]
