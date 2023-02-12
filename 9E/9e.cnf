@@ -8,9 +8,9 @@ utf8               = yes
 prompt             = no
 
 [req_distinguished_name]
-L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
+L = (city)
 ST = (State Or Province Name)
-C = (City)
+C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
 emailAddress = (email)
 CN = (Common name, Generally your name or something descriptive like "Card Auth")
 

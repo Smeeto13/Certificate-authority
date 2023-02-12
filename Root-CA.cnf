@@ -51,8 +51,6 @@ new_certs_dir     = $dir/certificates
 default_crl_days  = 60
 
 [policy_anything]
-countryName = optional
-stateOrProvinceName = optional
 commonName = supplied
 emailAddress = supplied
 
