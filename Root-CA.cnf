@@ -30,7 +30,7 @@ default_md        = sha256
 # Directory where new certificates will be stored
 dir               = .
 # File containing the CA certificate
-certificate       = $dir/certificates/CA.crt
+certificate       = $dir/certificates/CA.pem
 # File containing the CA private key
 private_key       = $dir/CA.key
 # File containing the database of issued certificates

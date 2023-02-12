@@ -25,7 +25,7 @@ def slotGen(name, cfg, type):
 
 def slotIssue(name, cfg, passwd):
     os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
-    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.crt -passout pass:{passwd}")
+    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
     os.system(f"rm {name}.csr")
 
 def main():
