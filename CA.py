@@ -31,6 +31,7 @@ def main():
     passwd = ""
     if prompt("Generate CA?"):
         passwd = input("PEM Password: ")
+        os.system("mkdir certificates")
         os.system(f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout CA.key -out certificates/CA.crt -passout pass:{passwd}")
         os.system("echo 02 > serial")
     
