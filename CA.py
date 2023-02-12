@@ -17,15 +17,15 @@ def prompt(ask):
 
 def slotGen(name, cfg, type):
     if type == "ECCP384":
-        os.system(f"openssl ecparam -genkey -name secp384r1 -out {name}.key")
+        os.system(f"openssl ecparam -genkey -name secp384r1 -out {name}/{name}.key")
     elif type == "RSA2048":
-        os.system(f"openssl genrsa -out {name}.key 2048")
+        os.system(f"openssl genrsa -out {name}/{name}.key 2048")
     
-    os.system(f"openssl req -new -config {cfg}.cnf -key {name}.key -nodes -out {name}.csr")
+    os.system(f"openssl req -new -config {name}/{cfg}.cnf -key {name}/{name}.key -nodes -out {name}.csr")
 
 def slotIssue(name, cfg, passwd):
-    os.system(f"openssl ca -config Root-CA.cnf -in {name}/{name}.csr -out {name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
-    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}.crt -certfile certificates/CA.crt -passout pass:{passwd}")
+    os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
+    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.crt -passout pass:{passwd}")
 
 def main():
     passwd = ""
