@@ -1,12 +1,43 @@
+[ca]
+default_ca = CA_default
+
+[CA_default]
+# Default hash for issued certificates
+default_md        = sha256
+# Directory where new certificates will be stored
+dir               = .
+# File containing the CA certificate
+certificate       = $dir/certificates/CA.crt
+# File containing the CA private key
+private_key       = $dir/CA.key
+# File containing the database of issued certificates
+database          = $dir/index.txt
+# File containing the serial number counter
+serial            = $dir/serial
+# Default expiration time for newly issued certificates
+default_days      = 1825
+# Default certificate policy
+policy            = policy_anything
+# File containing the certificate revocation list
+crl               = $dir/crl.pem
+# Directory containing CRL distribution points
+crl_dir           = $dir/crl
+# Directory for new Certs
+new_certs_dir     = $dir/certificates
+# CRL expiry time
+default_crl_days  = 60
+
+[policy_anything]
+countryName = optional
+stateOrProvinceName = optional
+commonName = supplied
+emailAddress = supplied
+
 [req]
-default_bits       = 4096
-default_md         = sha256
+default_bits = 4096
 distinguished_name = req_distinguished_name
-req_extensions     = v3_req
-x509_extensions    = v3_req
-string_mask        = MASK:0x2002
-utf8               = yes
-prompt             = no
+req_extensions = v3_req
+prompt = no
 
 [req_distinguished_name]
 L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
@@ -18,3 +49,5 @@ CN = (Common name, Generally your name or something descriptive like "Local CA")
 [v3_req]
 basicConstraints = critical,CA:TRUE,pathlen:1
 keyUsage = critical,cRLSign, digitalSignature, keyCertSign
+# Uncomment and replace URI if you intend to publish your crl online
+#crlDistributionPoints = URI:oliver.smeeton.xyz/LocalCA.crl
