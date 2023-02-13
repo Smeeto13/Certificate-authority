@@ -56,7 +56,7 @@ stateOrProvinceName = optional
 organizationName = optional
 organizationalUnitName = optional
 localityName = optional
-commonName = required
+commonName = supplied
 emailAddress = optional
 
 [req]
