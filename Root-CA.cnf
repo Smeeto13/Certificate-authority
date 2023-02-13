@@ -51,13 +51,15 @@ new_certs_dir     = $dir/certificates
 default_crl_days  = 60
 
 [policy_anything]
-countryName = optional
-stateOrProvinceName = optional
 organizationName = optional
 organizationalUnitName = optional
 localityName = optional
-commonName = supplied
+stateOrProvinceName = optional
+countryName = optional
 emailAddress = optional
+GN = optional
+title = optional
+commonName = supplied
 
 [req]
 default_bits = 4096
