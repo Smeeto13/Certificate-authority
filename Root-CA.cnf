@@ -42,7 +42,7 @@ default_days      = 1825
 # Default certificate policy
 policy            = policy_anything
 # File containing the certificate revocation list
-crl               = $dir/crl.pem
+crl               = $dir/CA-CRL.pem
 crl_extensions    = crl_ext
 # Directory containing CRL distribution points
 crl_dir           = $dir/crl

@@ -53,6 +53,11 @@ def main():
             passwd = input("PEM Password: ")
         slotGen("9E", "9e", "RSA2048")
         slotIssue("9E", "9e", passwd)
+    
+    if prompt("Generate CRL"):
+        if passwd == "":
+            passwd = input("PEM Password: ")
+        os.system("openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out CA-CRL.pem -passin pass:{passwd}")
 
 
 main()
