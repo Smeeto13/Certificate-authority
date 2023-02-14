@@ -62,7 +62,7 @@ def main():
                 print("Key Type:")
                 selection = selection_menu(["RSA2048","ECCP384"])
                 name = input("Name: ")
-                cfg = input(cfg)
+                cfg = input("config: ")
                 if selection == 1:
                     keyGen(name, cfg, "RSA2048")
                 else:
