@@ -20,5 +20,5 @@ nsCertType          = objsign, objCA
 nsComment           = "PIV SSH Authentication"
 extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, nsSGC, msSmartcardLogin, secureShellClient, secureShellServer
 keyUsage            = critical,digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
-authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
-crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
+#authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
+#crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem

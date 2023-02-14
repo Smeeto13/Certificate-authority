@@ -20,5 +20,5 @@ nsCertType          = objsign, objCA
 nsComment           = "EFS/BLE 9E"
 extendedKeyUsage    = critical,msEFS, 1.3.6.1.4.1.311.10.3.4.1, nsSGC, 1.3.6.1.4.1.311.21.6, 1.3.6.1.4.1.311.67.1.1, 1.3.6.1.4.1.311.67.1.2, msSmartcardLogin
 keyUsage            = critical,keyEncipherment, dataEncipherment
-authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
-crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
+#authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
+#crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
