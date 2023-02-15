@@ -3,4 +3,4 @@ Files and instructions for generating a Root CA and End Entity certificates for 
 
 Guide:  https://oliver.smeeton.xyz/security/openssl-toolkit/
 
-Requires python 3.10
+Requires python 3.10+
