@@ -44,7 +44,7 @@ def crtIssue(name, cfg, passwd):
 def crtRevoke(passwd):
     crts = os.listdir("certificates")
     selection = selection_menu(crts)
-    os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf")
+    os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
 
 
 def main():
