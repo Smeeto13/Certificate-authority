@@ -8,9 +8,9 @@ utf8               = yes
 prompt             = no
 
 [req_distinguished_name]
-L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
+L = (city)
 ST = (State Or Province Name)
-C = (City)
+C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
 emailAddress = (email)
 CN = (Common name, Generally your name or something descriptive like "Card Auth")
 
@@ -20,3 +20,5 @@ nsCertType          = objsign, objCA
 nsComment           = "PIV SSH Authentication"
 extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, nsSGC, msSmartcardLogin, secureShellClient, secureShellServer
 keyUsage            = critical,digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
+#authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
+#crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
