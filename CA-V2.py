@@ -1,4 +1,5 @@
 import os
+import getpass
 
 def selection_menu(options):
     """
@@ -50,7 +51,7 @@ def crtRevoke(passwd):
 def main():
     passwd = ""
     quit = False
-    passwd = input("PEM Password: ")
+    passwd = getpass.getpass("PEM Password: ")
     #options = ["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Generate CRL","Quit"]
     while quit == False:
         selection = selection_menu(["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Revoke","Generate CRL","Quit"])
