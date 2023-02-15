@@ -17,7 +17,7 @@ def selection_menu(options):
     return choice
 
 def passIn():
-    print("Show or Hide Password")
+    print("Show/Hide Password input?")
     passCheck = False
     selection = selection_menu(["Show","Hide"])
     while passCheck == False:
