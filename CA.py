@@ -49,21 +49,21 @@ def slotGen(slot, passwd): #Preconfigured steps for generating PFX for YubiKey P
     match slot:
         case 1:
             name = "9A"
-            csr = "9A.csr"
+            csr = f"{name}.csr"
             cfg = "9a.cnf"
             keyGen(name, csr, cfg, "ECCP384")
             crtIssue(name, csr, cfg, passwd)
             pfxOut(name, passwd)
         case 2:
             name = "9C"
-            csr = "9C.csr"
+            csr = f"{name}.csr"
             cfg = "9c.cnf"
             keyGen(name, csr, cfg, "ECCP384")
             crtIssue(name, csr, cfg, passwd)
             pfxOut(name, passwd)
         case 3:
             name = "9E"
-            csr = "9E.csr"
+            csr = f"{name}.csr"
             cfg = "9e.cnf"
             keyGen(name, csr, cfg, "RSA2048")
             crtIssue(name, csr, cfg, passwd)
@@ -119,6 +119,7 @@ def main():
     #Create directories if not already present:
     os.system("mkdir -p cnf")
     os.system("mkdir -p csr")
+    os.system("mkdir -p out")
     os.system("mkdir -p certificates")
     
     passwd = passIn()
@@ -145,7 +146,7 @@ def main():
                 crtRevoke(passwd)
  
             case 5: #Gen CRL
-                os.system(f"openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out CRL.pem -passin pass:{passwd}")
+                os.system(f"openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out out/CRL.pem -passin pass:{passwd}")
     
             case 6: #Quit
                 quit = True
