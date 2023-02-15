@@ -16,7 +16,7 @@ def selection_menu(options):
             pass
     return choice
 
-def passIn():
+def passIn(): #Gets password with 6 or more characters
     print("Show/Hide Password input?")
     passCheck = False
     selection = selection_menu(["Show","Hide"])
@@ -30,22 +30,24 @@ def passIn():
             passCheck = True
         else:
             print("Password too short!")
+    return passwd
 
-
-def slotGen(slot, passwd):
+def slotGen(slot, passwd): #Preconfigured steps for generating PFX for YubiKey PIV slots
     match slot:
         case 1:
             keyGen("9A", "9a", "ECCP384")
             crtIssue("9A", "9a", passwd)
+            pfxOut("9A", passwd)
         case 2:
             keyGen("9C", "9c", "ECCP384")
             crtIssue("9C", "9c", passwd)
+            pfxOut("9C", passwd)
         case 3:
             keyGen("9E", "9e", "RSA2048")
             crtIssue("9E", "9e", passwd)
+            pfxOut("9E", passwd)
 
-
-def keyGen(name, cfg, type):
+def keyGen(name, cfg, type): #Generates key and CSR
     if type == "ECCP384":
         os.system(f"openssl ecparam -genkey -name secp384r1 -out {name}/{name}.key")
     elif type == "RSA2048":
@@ -53,17 +55,38 @@ def keyGen(name, cfg, type):
     
     os.system(f"openssl req -new -config {name}/{cfg}.cnf -key {name}/{name}.key -nodes -out {name}.csr")
 
-def crtIssue(name, cfg, passwd):
-    os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
-    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
+def crtIssue(name, cfg, passwd): #Issues certificate using CSR and optional config
+    if cfg == "":
+        os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions copy -notext -passin pass:{passwd}")
+    else:
+        os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
     os.system(f"rm {name}.csr")
 
+def pfxOut(name,passwd): #Combines Key, CRT and CA CRT into PFX file
+    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
+
+def customCRT(passwd): #Create Key and CRT or sign existing CSR
+    print("Generate new key or use provided CSR?")
+    selection = selection_menu(["New Key","Sign existing CSR"])
+    name = input("Name: ")
+    cfg = input("config (Empty for none): ").strip()
+    if selection == 1: #Generate Key and issue CRT then export to PFX
+        print("Key Type:")
+        selection = selection_menu(["RSA2048","ECCP384"])
+        if selection == 1:
+            keyGen(name, cfg, "RSA2048")
+        else:
+            keyGen(name, cfg, "ECCP384")
+        crtIssue(name, cfg, passwd)
+        pfxOut(name,passwd)
+    else: #Only issue certificate
+        crtIssue(name, cfg, passwd)
+    
 def crtRevoke(passwd):
     print("Select certificate Serial: ")
     crts = os.listdir("certificates")
     selection = selection_menu(crts)
     os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
-
 
 def main():
     passwd = passIn()
@@ -84,16 +107,7 @@ def main():
                 slotGen(selection, passwd)
 
             case 3: #Gen Custom Crt
-                print("Key Type:")
-                selection = selection_menu(["RSA2048","ECCP384"])
-                name = input("Name: ")
-                cfg = input("config: ")
-                if selection == 1:
-                    keyGen(name, cfg, "RSA2048")
-                else:
-                    keyGen(name, cfg, "ECCP384")
-                
-                crtIssue(name, cfg, passwd)
+                customCRT(passwd)
 
             case 4: #Revoke
                 crtRevoke(passwd)
@@ -101,7 +115,7 @@ def main():
             case 5: #Gen CRL
                 os.system(f"openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out CRL.pem -passin pass:{passwd}")
     
-            case 6:
+            case 6: #Quit
                 quit = True
 
 main()
