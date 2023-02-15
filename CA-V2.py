@@ -41,13 +41,19 @@ def crtIssue(name, cfg, passwd):
     os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
     os.system(f"rm {name}.csr")
 
+def crtRevoke(passwd):
+    crts = os.listdir("certificates")
+    selection = selection_menu(crts)
+    os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf")
+
+
 def main():
     passwd = ""
     quit = False
     passwd = input("PEM Password: ")
     #options = ["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Generate CRL","Quit"]
     while quit == False:
-        selection = selection_menu(["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Generate CRL","Quit"])
+        selection = selection_menu(["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Revoke","Generate CRL","Quit"])
         match selection:
             case 1: #Gen CA
                 os.system("mkdir certificates")
@@ -69,11 +75,14 @@ def main():
                     keyGen(name, cfg, "ECCP384")
                 
                 crtIssue(name, cfg, passwd)
- 
-            case 4: #Gen CRL
-                os.system(f"openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out CRL.pem -passin pass:{passwd}")
 
-            case 5:
+            case 4: #Revoke
+                crtRevoke(passwd)
+ 
+            case 5: #Gen CRL
+                os.system(f"openssl ca -config Root-CA.cnf -keyfile CA.key -cert certificates/CA.pem -gencrl -out CRL.pem -passin pass:{passwd}")
+    
+            case 6:
                 quit = True
 
 main()
