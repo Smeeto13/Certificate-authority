@@ -69,8 +69,8 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
     print("Generate new key or use provided CSR?")
     selection = selection_menu(["New Key","Sign existing CSR"])
     name = input("Name: ")
-    cfg = input("config (Empty for none): ").strip()
     if selection == 1: #Generate Key and issue CRT then export to PFX
+        cfg = input("config (Required): ")
         print("Key Type:")
         selection = selection_menu(["RSA2048","ECCP384"])
         if selection == 1:
@@ -80,6 +80,7 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
         crtIssue(name, cfg, passwd)
         pfxOut(name,passwd)
     else: #Only issue certificate
+        cfg = input("config (Empty to use config from CSR): ").strip()
         crtIssue(name, cfg, passwd)
     
 def crtRevoke(passwd):
