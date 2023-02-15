@@ -28,6 +28,8 @@ def passIn():
         
         if len(passwd) >= 6:
             passCheck = True
+        else:
+            print("Password too short!")
 
 
 def slotGen(slot, passwd):
@@ -57,6 +59,7 @@ def crtIssue(name, cfg, passwd):
     os.system(f"rm {name}.csr")
 
 def crtRevoke(passwd):
+    print("Select certificate Serial: ")
     crts = os.listdir("certificates")
     selection = selection_menu(crts)
     os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
@@ -73,6 +76,7 @@ def main():
             case 1: #Gen CA
                 os.system("mkdir certificates")
                 os.system(f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{passwd}")
+                os.system("openssl x509 -outform der -in certificates/CA.pem -out CA.crt")
                 os.system("echo 02 > serial")
 
             case 2: #Gen YubiKey Slot
