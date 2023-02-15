@@ -16,6 +16,19 @@ def selection_menu(options):
             pass
     return choice
 
+def passIn():
+    passCheck = False
+    selection = selection_menu(["Show","Hide"])
+    while passCheck == False:
+        if selection == 1:
+            passwd = input("PEM Password: ")
+        else:
+            passwd = getpass.getpass("PEM Password: ")
+        
+        if len(passwd) >= 6:
+            passCheck = True
+
+
 def slotGen(slot, passwd):
     match slot:
         case 1:
@@ -49,10 +62,10 @@ def crtRevoke(passwd):
 
 
 def main():
-    passwd = ""
+    passwd = passIn()
+
     quit = False
-    passwd = getpass.getpass("PEM Password: ")
-    #options = ["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Generate CRL","Quit"]
+
     while quit == False:
         selection = selection_menu(["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Revoke","Generate CRL","Quit"])
         match selection:
