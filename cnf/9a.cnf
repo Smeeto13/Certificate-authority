@@ -8,11 +8,11 @@ utf8               = yes
 prompt             = no
 
 [req_distinguished_name]
-L = (city)
-ST = (State Or Province Name)
-C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
-emailAddress = (email)
-CN = (Common name, Generally your name or something descriptive like "Card Auth")
+#L = (city) Optional, Uncomment to use
+#ST = (State Or Province Name) Optional, Uncomment to use
+#C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada) Optional, Uncomment to use
+#emailAddress = (email) Optional, Uncomment to use
+CN = (Common name, Generally your name or something descriptive like "Card Auth") #Required
 
 [v3_req]
 basicConstraints    = CA:false,pathlen:0
@@ -20,5 +20,6 @@ nsCertType          = objsign, objCA
 nsComment           = "PIV SSH Authentication"
 extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, nsSGC, msSmartcardLogin, secureShellClient, secureShellServer
 keyUsage            = critical,digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
+# Uncomment and replace URI if you intend to publish your CRT or CRL online
 #authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
 #crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem

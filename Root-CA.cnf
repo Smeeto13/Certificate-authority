@@ -73,13 +73,13 @@ req_extensions = v3_req
 prompt = no
 
 [req_distinguished_name]
-L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada)
-ST = (State Or Province Name)
-C = (City)
-emailAddress = (email)
-GN = (Given Name)
-title = (Title)
-CN = (Common name, Generally your name or something descriptive like "Local CA")
+#L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada) Optional, Uncomment to use
+#ST = (State Or Province Name) Optional, Uncomment to use
+#C = (City) Optional, Uncomment to use
+#emailAddress = (email) Optional, Uncomment to use
+#GN = (Given Name) Optional, Uncomment to use
+#title = (Title) Optional, Uncomment to use
+CN = (Common name, Generally your name or something descriptive like "Local CA") #Required
 
 [v3_req]
 basicConstraints = critical,CA:TRUE,pathlen:1
