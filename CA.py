@@ -32,10 +32,11 @@ def passIn(): #Gets password with 6 or more characters
             print("Password too short!")
     return passwd
 
-def selectCNF():
+def selectCNF(allowNone):
     print("pick a config:")
     configs = os.listdir("cnf")
-    configs.append("No CNF (CSR Signing only)")
+    if allowNone:
+        configs.append("No CNF (CSR Signing only)")
     selection = selection_menu(configs)
     return configs[selection-1]
 
@@ -94,7 +95,7 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
     selection = selection_menu(["New Key","Sign existing CSR"])
     name = input("Name: ")
     if selection == 1: #Generate Key and issue CRT then export to PFX
-        cfg = selectCNF()
+        cfg = selectCNF(False)
         csr = f"{name}.csr"
         print("Key Type:")
         selection = selection_menu(["RSA2048","ECCP384"])
@@ -105,7 +106,7 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
         crtIssue(name, csr, cfg, passwd)
         pfxOut(name,passwd)
     else: #Only issue certificate
-        cfg = selectCNF()
+        cfg = selectCNF(True)
         csr = selectCSR()
         crtIssue(name, csr, cfg, passwd)
     
