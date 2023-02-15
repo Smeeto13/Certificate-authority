@@ -32,56 +32,82 @@ def passIn(): #Gets password with 6 or more characters
             print("Password too short!")
     return passwd
 
+def selectCNF():
+    print("pick a config:")
+    configs = os.listdir("cnf")
+    configs.append("No CNF (CSR Signing only)")
+    selection = selection_menu(configs)
+    return configs[selection-1]
+
+def selectCSR():
+    print("pick a config:")
+    CSRs = os.listdir("csr")
+    selection = selection_menu(CSRs)
+    return CSRs[selection-1]
+
 def slotGen(slot, passwd): #Preconfigured steps for generating PFX for YubiKey PIV slots
     match slot:
         case 1:
-            keyGen("9A", "9a", "ECCP384")
-            crtIssue("9A", "9a", passwd)
-            pfxOut("9A", passwd)
+            name = "9A"
+            csr = "9A.csr"
+            cfg = "9a.cnf"
+            keyGen(name, csr, cfg, "ECCP384")
+            crtIssue(name, csr, cfg, passwd)
+            pfxOut(name, passwd)
         case 2:
-            keyGen("9C", "9c", "ECCP384")
-            crtIssue("9C", "9c", passwd)
-            pfxOut("9C", passwd)
+            name = "9C"
+            csr = "9C.csr"
+            cfg = "9c.cnf"
+            keyGen(name, csr, cfg, "ECCP384")
+            crtIssue(name, csr, cfg, passwd)
+            pfxOut(name, passwd)
         case 3:
-            keyGen("9E", "9e", "RSA2048")
-            crtIssue("9E", "9e", passwd)
-            pfxOut("9E", passwd)
+            name = "9E"
+            csr = "9E.csr"
+            cfg = "9e.cnf"
+            keyGen(name, csr, cfg, "RSA2048")
+            crtIssue(name, csr, cfg, passwd)
+            pfxOut(name, passwd)
 
-def keyGen(name, cfg, type): #Generates key and CSR
+def keyGen(name, csr, cfg, type): #Generates key and CSR
+    os.system(f"mkdir -p out/{name}")
     if type == "ECCP384":
-        os.system(f"openssl ecparam -genkey -name secp384r1 -out {name}/{name}.key")
+        os.system(f"openssl ecparam -genkey -name secp384r1 -out out/{name}/{name}.key")
     elif type == "RSA2048":
-        os.system(f"openssl genrsa -out {name}/{name}.key 2048")
+        os.system(f"openssl genrsa -out out/{name}/{name}.key 2048")
     
-    os.system(f"openssl req -new -config {name}/{cfg}.cnf -key {name}/{name}.key -nodes -out {name}.csr")
+    os.system(f"openssl req -new -config cnf/{cfg} -key out/{name}/{name}.key -nodes -out csr/{csr}")
 
-def crtIssue(name, cfg, passwd): #Issues certificate using CSR and optional config
-    if cfg == "":
-        os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions copy -notext -passin pass:{passwd}")
+def crtIssue(name, csr, cfg, passwd): #Issues certificate using CSR and optional config
+    os.system(f"mkdir -p out/{name}")
+    if cfg == "No CNF (CSR Signing only)":
+        os.system(f"openssl ca -config Root-CA.cnf -in csr/{csr} -out out/{name}/{name}.crt -extensions copy -notext -passin pass:{passwd}")
     else:
-        os.system(f"openssl ca -config Root-CA.cnf -in {name}.csr -out {name}/{name}.crt -extensions v3_req -extfile {name}/{cfg}.cnf -notext -passin pass:{passwd}")
-    os.system(f"rm {name}.csr")
+        os.system(f"openssl ca -config Root-CA.cnf -in csr/{csr} -out out/{name}/{name}.crt -extensions v3_req -extfile cnf/{cfg} -notext -passin pass:{passwd}")
+    os.system(f"rm csr/{csr}")
 
 def pfxOut(name,passwd): #Combines Key, CRT and CA CRT into PFX file
-    os.system(f"openssl pkcs12 -export -out {name}/{name}.pfx -inkey {name}/{name}.key -in {name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
+    os.system(f"openssl pkcs12 -export -out out/{name}/{name}.pfx -inkey out/{name}/{name}.key -in out/{name}/{name}.crt -certfile certificates/CA.pem -passout pass:{passwd}")
 
 def customCRT(passwd): #Create Key and CRT or sign existing CSR
     print("Generate new key or use provided CSR?")
     selection = selection_menu(["New Key","Sign existing CSR"])
     name = input("Name: ")
     if selection == 1: #Generate Key and issue CRT then export to PFX
-        cfg = input("config (Required): ")
+        cfg = selectCNF()
+        csr = f"{name}.csr"
         print("Key Type:")
         selection = selection_menu(["RSA2048","ECCP384"])
         if selection == 1:
-            keyGen(name, cfg, "RSA2048")
+            keyGen(name, csr, cfg, "RSA2048")
         else:
-            keyGen(name, cfg, "ECCP384")
-        crtIssue(name, cfg, passwd)
+            keyGen(name, csr, cfg, "ECCP384")
+        crtIssue(name, csr, cfg, passwd)
         pfxOut(name,passwd)
     else: #Only issue certificate
-        cfg = input("config (Empty to use config from CSR): ").strip()
-        crtIssue(name, cfg, passwd)
+        cfg = selectCNF()
+        csr = selectCSR()
+        crtIssue(name, csr, cfg, passwd)
     
 def crtRevoke(passwd):
     print("Select certificate Serial: ")
@@ -90,21 +116,26 @@ def crtRevoke(passwd):
     os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
 
 def main():
+    #Create directories if not already present:
+    os.system("mkdir -p cnf")
+    os.system("mkdir -p csr")
+    os.system("mkdir -p certificates")
+    
     passwd = passIn()
 
     quit = False
 
+    #Main Menu
     while quit == False:
         selection = selection_menu(["Generate CA","Generate YubiKey Slot","Generate Custom Certificate","Revoke","Generate CRL","Quit"])
         match selection:
             case 1: #Gen CA
-                os.system("mkdir -p certificates")
                 os.system(f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{passwd}")
                 os.system("openssl x509 -outform der -in certificates/CA.pem -out CA.crt")
                 os.system("echo 02 > serial")
 
             case 2: #Gen YubiKey Slot
-                selection = selection_menu(["9A","9C","9E"])
+                selection = selection_menu(["9A - Authentication","9C - Digital Signature","9E - Card Authentication"])
                 slotGen(selection, passwd)
 
             case 3: #Gen Custom Crt
