@@ -117,11 +117,16 @@ def crtRevoke(passwd):
     os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
 
 def main():
-    #Create directories if not already present:
-    os.system("mkdir -p cnf")
-    os.system("mkdir -p csr")
-    os.system("mkdir -p out")
-    os.system("mkdir -p certificates")
+    if os.name == 'posix':
+        os.system("mkdir -p cnf")
+        os.system("mkdir -p csr")
+        os.system("mkdir -p out")
+        os.system("mkdir -p certificates")
+    else:
+        os.system("mkdir -f cnf")
+        os.system("mkdir -f csr")
+        os.system("mkdir -f out")
+        os.system("mkdir -f certificates")
     
     passwd = passIn()
 
