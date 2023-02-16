@@ -113,6 +113,7 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
 def crtRevoke(passwd):
     print("Select certificate Serial: ")
     crts = os.listdir("certificates")
+    crts.sort()
     selection = selection_menu(crts)
     os.system(f"openssl ca -revoke certificates/{crts[selection-1]} -config Root-CA.cnf -passin pass:{passwd}")
 
