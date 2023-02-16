@@ -138,7 +138,7 @@ def main():
         match selection:
             case 1: #Gen CA
                 os.system(f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{passwd}")
-                os.system("openssl x509 -outform der -in certificates/CA.pem -out CA.crt")
+                os.system("openssl x509 -outform der -in certificates/CA.pem -out out/CA.crt")
                 os.system("echo 02 > serial")
 
             case 2: #Gen YubiKey Slot
