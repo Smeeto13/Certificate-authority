@@ -76,6 +76,8 @@ def keyGen(name, csr, cfg, type): #Generates key and CSR
         os.system(f"openssl ecparam -genkey -name secp384r1 -out out/{name}/{name}.key")
     elif type == "RSA2048":
         os.system(f"openssl genrsa -out out/{name}/{name}.key 2048")
+    elif type == "RSA4096":
+        os.system(f"openssl genrsa -out out/{name}/{name}.key 4096")
     
     os.system(f"openssl req -new -config cnf/{cfg} -key out/{name}/{name}.key -nodes -out csr/{csr}")
 
@@ -98,11 +100,13 @@ def customCRT(passwd): #Create Key and CRT or sign existing CSR
         cfg = selectCNF(False)
         csr = f"{name}.csr"
         print("Key Type:")
-        selection = selection_menu(["RSA2048","ECCP384"])
+        selection = selection_menu(["RSA2048","ECCP384","RSA4096"])
         if selection == 1:
             keyGen(name, csr, cfg, "RSA2048")
-        else:
+        elif selection == 2:
             keyGen(name, csr, cfg, "ECCP384")
+        else:
+            keyGen(name, csr, cfg, "RSA4096")
         crtIssue(name, csr, cfg, passwd)
         pfxOut(name,passwd)
     else: #Only issue certificate
