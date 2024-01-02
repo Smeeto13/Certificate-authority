@@ -1,3 +1,8 @@
+oid_section         = yubikey_oids
+
+[yubikey_oids]
+.include = yubikey_oids.cnf
+
 [req]
 default_md         = sha256
 distinguished_name = req_distinguished_name
