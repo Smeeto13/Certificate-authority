@@ -49,7 +49,7 @@ def pass_in():
 def piv_menu():
     """Generate a PFX for PIV slots 9A, 9C, 9D or 9E, slot argument should be one of these, specify ca_config to change the issuing CA"""
     name = selection_menu(
-        ["9A - Authentication", "9C - Digital Signature", "9E - Card Authentication"])[0:2]
+        ["9A - Authentication", "9C - Digital Signature", "9D - Card Authentication"])[0:2]
     csr = f"{name}.csr"
     cfg = f"{name}.cnf"
     key_type = selection_menu(
