@@ -17,14 +17,14 @@ prompt             = no
 #ST = (State Or Province Name) Optional, Uncomment to use
 #C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada) Optional, Uncomment to use
 #emailAddress = (email) Optional, Uncomment to use
-CN = (Common name, Generally your name or something descriptive like "Card Auth") #Required
+CN = (Common name, Generally your name or something descriptive like "Digital Signature") #Required
 
 [v3_req]
 basicConstraints    = CA:false,pathlen:0
 nsCertType          = objsign, objCA
-nsComment           = "EFS/BLE 9E"
-extendedKeyUsage    = critical,msEFS, msEFSR, nsSGC, msEFSRecovery, driveEncryption, driveRecovery, msSmartcardLogin
-keyUsage            = critical,keyEncipherment, dataEncipherment
+nsComment           = "PIV 9C"
+extendedKeyUsage    = critical, codeSigning, timeStamping, msCodeInd, msCodeCom, msCTLSign, OCSPSigning, adobeSigning, adobeDigitcert, msofficeSigning, msDocSigning, docuEncrypt, adobex509, msAuthenticode, msTimestamping, gpgUsageSign, gpgUsageEncr
+keyUsage            = critical, digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
 # Uncomment and replace URI if you intend to publish your CRT or CRL online
-#authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
-#crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
+#authorityInfoAccess = CAIssuers;URI:https://sophie.smeeton.icu/CA/CA.crt
+#crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem

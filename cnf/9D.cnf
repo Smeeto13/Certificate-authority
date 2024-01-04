@@ -22,9 +22,9 @@ CN = (Common name, Generally your name or something descriptive like "Card Auth"
 [v3_req]
 basicConstraints    = CA:false,pathlen:0
 nsCertType          = objsign, objCA
-nsComment           = "PIV SSH Authentication"
-extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, nsSGC, msSmartcardLogin, secureShellClient, secureShellServer
-keyUsage            = critical,digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign, cRLSign
+nsComment           = "PIV 9D"
+extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, msEFS, msEFSR, nsSGC, msEFSRecovery, driveEncryption, driveRecovery, msSmartcardLogin, secureShellClient, secureShellServer, rda, gpgUsageCert, gpgUsageSign, gpgUsageEncr, gpgUsageAuth, msAuthenticode
+keyUsage            = critical,nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement
 # Uncomment and replace URI if you intend to publish your CRT or CRL online
-#authorityInfoAccess = CAIssuers;URI:https://oliver.smeeton.xyz/CA/CA.crt
-#crlDistributionPoints = URI:https://oliver.smeeton.xyz/CRL.pem
+#authorityInfoAccess = CAIssuers;URI:https://sophie.smeeton.icu/CA/CA.crt
+#crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem
