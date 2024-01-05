@@ -80,7 +80,7 @@ def custom_crt():  # Create Key and CRT or sign existing CSR
     print("Generate new key or use provided CSR?")
     selection = selection_menu(["New Key", "Sign existing CSR"])
     name = input("Name: ")
-    if selection == 1:  # Generate Key and issue CRT then export to PFX
+    if selection == 0:  # Generate Key and issue CRT then export to PFX
         cfg = select_cnf(False)
         csr = f"{name}.csr"
         print("Key Type:")
