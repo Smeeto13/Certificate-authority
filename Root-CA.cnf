@@ -14,7 +14,7 @@ dir               = .
 # File containing the CA certificate
 certificate       = $dir/certificates/CA.pem
 # File containing the CA private key
-private_key       = $dir/CA_Root/CA.key
+private_key       = $dir/Root_CA/CA.key
 # File containing the database of issued certificates
 database          = $dir/index.txt
 # File containing the serial number counter
