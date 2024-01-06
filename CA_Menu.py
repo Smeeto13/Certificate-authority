@@ -46,20 +46,6 @@ def pass_in():
     return passwd
 
 
-def piv_menu():
-    """Generate a PFX for PIV slots 9A, 9C, 9D or 9E, slot argument should be one of these, specify ca_config to change the issuing CA"""
-    name = selection_menu(
-        ["9A - Authentication", "9C - Digital Signature", "9D - Card Authentication"])[0:2]
-    csr = f"{name}.csr"
-    cfg = f"{name}.cnf"
-    key_type = selection_menu(
-        ["RSA2048", "ECCP384", "RSA4096", "Prime 256"])
-
-    CA.key_gen(name, csr, cfg, key_type)
-    CA.crt_issue(name, csr, cfg)
-    CA.pfx_out(name)
-
-
 def select_cnf(allow_none):
     print("pick a config:")
     configs = os.listdir("cnf")
@@ -104,13 +90,11 @@ def main():
 
     # Main Menu
     while exit_menu is False:
-        selection = selection_menu(["Generate CA", "Generate YubiKey/PIV Slot",
-                                   "Generate Custom Certificate", "Revoke", "Generate CRL", "Quit"])
+        selection = selection_menu(
+            ["Generate CA", "Generate Custom Certificate", "Revoke", "Generate CRL", "Quit"])
         match selection:
             case "Generate CA":
                 CA.create_ca()
-            case "Generate YubiKey/PIV Slot":
-                piv_menu()
 
             case "Generate Custom Certificate":
                 custom_crt()

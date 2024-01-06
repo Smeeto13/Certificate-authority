@@ -19,12 +19,10 @@ class CertificateAuthority:
         self.passwd = ""
 
         if os.name == 'posix':
-            os.system("mkdir -p Root-CA")
             os.system("mkdir -p csr")
             os.system("mkdir -p out")
             os.system("mkdir -p certificates")
         else:
-            os.system("mkdir -f Root-CA")
             os.system("mkdir -f csr")
             os.system("mkdir -f out")
             os.system("mkdir -f certificates")
@@ -36,14 +34,14 @@ class CertificateAuthority:
 
     def create_ca(self):
         """Create a self signed CA"""
-        if not os.path.isfile("CA_Root/CA.key"):
+        if not os.path.isfile("CA.key"):
             os.system(
-                f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout Root-CA/CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
+                f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_req -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
             os.system(
                 "openssl x509 -outform der -in certificates/CA.pem -out out/CA.crt")
             os.system("echo 02 > serial")
         else:
-            print("\"CA_Root/CA.key\" already exists")
+            print("\"CA.key\" already exists")
 
     def key_gen(self, name, csr, cfg, key_type):
         """Generates key and CSR"""
