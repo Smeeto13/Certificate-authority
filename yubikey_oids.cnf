@@ -1,0 +1,22 @@
+# yubikey_oids.cnf
+
+[yubikey_oids]
+adobeSigning        = 1.2.840.113583.1.1.5
+adobeDigitcert      = 2.16.840.1.114412.3.21
+adobex509           = 1.2.840.113583.1.1.9
+gpgUsageCert        = 1.3.6.1.4.1.11591.2.6.1
+gpgUsageSign        = 1.3.6.1.4.1.11591.2.6.2
+gpgUsageEncr        = 1.3.6.1.4.1.11591.2.6.3
+gpgUsageAuth        = 1.3.6.1.4.1.11591.2.6.4
+microsoftCaVersion  = 1.3.6.1.4.1.311.21.1
+msEFSR              = 1.3.6.1.4.1.311.10.3.4.1
+msEFSRecovery       = 1.3.6.1.4.1.311.21.6
+msofficeSigning     = 1.3.6.1.4.1.311.10.3.12
+msDocSigning        = 1.3.6.1.4.1.311.3.10.3.12
+msAuthenticode      = 1.3.6.1.4.1.311.2
+msTimestamping      = 1.3.6.1.4.1.311.3
+rda                 = 1.3.6.1.4.1.311.54.1.2
+driveEncryption     = 1.3.6.1.4.1.311.67.1.1
+driveRecovery       = 1.3.6.1.4.1.311.67.1.2
+docuEncrypt         = 1.3.6.1.4.1.311.80.1
+nameDistinguisher   = 0.2.262.1.10.7.20

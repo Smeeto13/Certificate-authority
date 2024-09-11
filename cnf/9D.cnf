@@ -1,0 +1,30 @@
+oid_section         = yubikey_oids
+
+[yubikey_oids]
+.include = yubikey_oids.cnf
+
+[req]
+default_md         = sha256
+distinguished_name = req_distinguished_name
+req_extensions     = v3_req
+x509_extensions    = v3_req
+string_mask        = MASK:0x2002
+utf8               = yes
+prompt             = no
+
+[req_distinguished_name]
+#L = (city) Optional, Uncomment to use
+#ST = (State Or Province Name) Optional, Uncomment to use
+#C = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada) Optional, Uncomment to use
+#emailAddress = (email) Optional, Uncomment to use
+CN = (Common name, Generally your name or something descriptive like "Card Auth") #Required
+
+[v3_req]
+basicConstraints    = CA:false,pathlen:0
+nsCertType          = objsign, objCA
+nsComment           = "PIV 9D"
+extendedKeyUsage    = critical,serverAuth, clientAuth, emailProtection, msSGC, msEFS, msEFSR, nsSGC, msEFSRecovery, driveEncryption, driveRecovery, msSmartcardLogin, secureShellClient, secureShellServer, rda, gpgUsageCert, gpgUsageSign, gpgUsageEncr, gpgUsageAuth, msAuthenticode
+keyUsage            = critical,nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement
+# Uncomment and replace URI if you intend to publish your CRT or CRL online
+#authorityInfoAccess = CAIssuers;URI:https://sophie.smeeton.icu/CA/CA.crt
+#crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem
