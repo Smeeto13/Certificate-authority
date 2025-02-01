@@ -1,7 +1,19 @@
 oid_section         = yubikey_oids
+openssl_conf        = openssl_def
 
 [yubikey_oids]
 .include = yubikey_oids.cnf
+
+[openssl_def]
+engines = engine_section
+
+[engine_section]
+pkcs11 = pkcs11_section
+
+[pkcs11_section]
+engine_id = pkcs11
+MODULE_PATH = /usr/lib/opensc-pkcs11.so
+init = 0
 
 [ca]
 default_ca = CA_default
@@ -20,21 +32,22 @@ database          = $dir/index.txt
 # File containing the serial number counter
 serial            = $dir/serial
 # Default expiration time for newly issued certificates
-default_days      = 1825
+default_days      = 3650
 # Default certificate policy
 policy            = policy_anything
 # File containing the certificate revocation list
 crl               = $dir/CRL.pem
+crlnumber	  = $dir/crlnumber
 crl_extensions    = crl_ext
 # Directory containing CRL distribution points
 crl_dir           = $dir/crl
 # Directory for new Certs
 new_certs_dir     = $dir/certificates
 # CRL expiry time
-default_crl_days  = 60
+default_crl_days  = 180
 
 [crl_ext]
-authorityKeyIdentifier=keyid,issuer:alway
+authorityKeyIdentifier=keyid:always
 
 [policy_anything]
 organizationName = optional
@@ -48,24 +61,51 @@ title = optional
 commonName = supplied
 
 [req]
-default_bits = 4096
+default_bits = 2048
 default_md         = sha256
 distinguished_name = req_distinguished_name
-req_extensions = v3_req
+x509_extensions = v3_ca
+string_mask     = utf8only
 prompt = no
 
 [req_distinguished_name]
-#L = (Two-character country/region code, e.g: UK for United Kingdom or CA for Canada) Optional, Uncomment to use
-#ST = (State Or Province Name) Optional, Uncomment to use
+L = UK
+#ST = England
 #C = (City) Optional, Uncomment to use
-#emailAddress = (email) Optional, Uncomment to use
+emailAddress = sophie@smeeton.icu
 #GN = (Given Name) Optional, Uncomment to use
 #title = (Title) Optional, Uncomment to use
-CN = (Common name, Generally your name or something descriptive like "Local CA") #Required
+CN = smeeton.icu
 
-[v3_req]
-basicConstraints = critical,CA:TRUE,pathlen:1
+[v3_ca]
+basicConstraints = critical, CA:true
 keyUsage = critical,cRLSign, digitalSignature, keyCertSign
-authorityKeyIdentifier=keyid,issuer:always
+authorityKeyIdentifier = keyid:always,issuer
 # Uncomment and replace URI if you intend to publish your crl online
-#crlDistributionPoints = URI:https://sophie.smeeton.xyz/CA/CRL.pem
+crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem
+
+[v3_intermediate_ca]
+# Extensions for a typical intermediate CA (`man x509v3_config`).
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true, pathlen:0
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+[server_cert]
+# Extensions for server certificates (`man x509v3_config`).
+basicConstraints = CA:FALSE
+nsCertType = server
+nsComment = "OpenSSL Generated Server Certificate"
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer:always
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+
+[ocsp]
+# Extension for OCSP signing certificates (`man ocsp`).
+basicConstraints = CA:FALSE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage = critical, digitalSignature
+extendedKeyUsage = critical, OCSPSigning
+
