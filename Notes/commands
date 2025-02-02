@@ -1,0 +1,5 @@
+Create CA
+openssl req -config Root-CA.cnf \                
+      -engine pkcs11 -keyform engine -key {key id} \
+      -new -x509 -days 3650 -sha512 -extensions v3_ca \
+      -out certificates/CA.pem
