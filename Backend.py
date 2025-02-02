@@ -36,7 +36,7 @@ class CertificateAuthority:
         """Create a self signed CA"""
         if not os.path.isfile("CA.key"):
             os.system(
-                f"openssl req -new -x509 -sha256 -days 3650 -config Root-CA.cnf -extensions v3_ca -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
+                f"openssl req -new -x509 -sha512 -days 3650 -config Root-CA.cnf -extensions v3_ca -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
             os.system(
                 "openssl x509 -outform der -in certificates/CA.pem -out out/CA.crt")
             os.system("echo 02 > serial")
