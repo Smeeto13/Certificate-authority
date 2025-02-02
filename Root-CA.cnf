@@ -20,7 +20,7 @@ default_ca = CA_default
 
 [CA_default]
 # Default hash for issued certificates
-default_md        = sha256
+default_md        = sha512
 # Directory where new certificates will be stored
 dir               = .
 # File containing the CA certificate
@@ -62,7 +62,7 @@ commonName = supplied
 
 [req]
 default_bits = 2048
-default_md         = sha256
+default_md         = sha512
 distinguished_name = req_distinguished_name
 x509_extensions = v3_ca
 string_mask     = utf8only
