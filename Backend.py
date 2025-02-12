@@ -56,11 +56,12 @@ class CertificateAuthority:
     def create_ca(self):
         """Create a self signed CA"""
         if not os.path.isfile("CA.key") and not self.use_sc:
+            os.system("openssl ecparam -name secp521r1 -genkey -noout -out CA.key")
             os.system(
-                f"openssl req -new -x509 -sha512 -days 3650 -config Root-CA.cnf -extensions v3_ca -set_serial 1 -keyout CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
+                f"openssl req -new -x509 -sha512 -days 3650 -config Root-CA.cnf -extensions v3_ca -set_serial 1 -key CA.key -out certificates/CA.pem -passout pass:{self.passwd}")
         elif self.use_sc and not os.path.isfile("CA_SN.conf"):
             serial_number = uuid.uuid4().hex
-            os.system(f"""pkcs11-tool --login --keypairgen --key-type rsa:2048 --label "CA" --id {serial_number}""")
+            os.system(f"""pkcs11-tool --login --keypairgen --key-type EC:prime256v1 --label "CA" --id {serial_number}""")
             os.system(f"openssl req -config Root-CA.cnf -engine pkcs11 -keyform engine -key {serial_number} -new -x509 -days 3650 -sha512 -extensions v3_ca -set_serial 1 -out certificates/CA.pem")
             os.system("pkcs15-init -X certificates/CA.pem")
             with open("CA_SN.conf","w") as ca_sn:
