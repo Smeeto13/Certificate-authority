@@ -1,4 +1,4 @@
-""" Copyright 2023, 2024 Sophie Smeeton
+""" Copyright 2023, 2024, 2025 Sophie Smeeton
 This file is part of Certificate-authority-Tool
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -10,7 +10,6 @@ You should have received a copy of the GNU General Public License along with thi
 import os
 import getpass
 import Backend
-
 
 def selection_menu(options):
     """
@@ -86,6 +85,7 @@ CA = Backend.CertificateAuthority()
 
 def main():
     CA.set_pass(pass_in())
+    CA.set_sc(selection_menu(["PKCS11 CA", "Software CA"]))
     exit_menu = False
 
     # Main Menu
