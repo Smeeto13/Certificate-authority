@@ -82,7 +82,7 @@ basicConstraints = critical, CA:true
 keyUsage = critical,cRLSign, digitalSignature, keyCertSign
 authorityKeyIdentifier = keyid:always,issuer
 # Uncomment and replace URI if you intend to publish your crl online
-crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem
+#crlDistributionPoints = URI:https://sophie.smeeton.icu/CA/CRL.pem
 
 [v3_intermediate_ca]
 # Extensions for a typical intermediate CA (`man x509v3_config`).
@@ -108,4 +108,3 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer
 keyUsage = critical, digitalSignature
 extendedKeyUsage = critical, OCSPSigning
-

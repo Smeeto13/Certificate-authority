@@ -1,4 +1,4 @@
-# Certificate-authority
+# Mini CA
 A python based tool for generating and managing OpenSSL keys and certificates
 
 Guide:  https://sophie.smeeton.icu/security/openssl-toolkit/ #Not active link
